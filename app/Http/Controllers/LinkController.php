@@ -16,9 +16,10 @@ class LinkController extends Controller
     {
         $link = Link::where('identifier', $identifier)->first();
 
-        // TODO: Add visit counters to create statistics about the clicked links etc.
-
         if ($link) {
+            $link->clicks++;
+            $link->save();
+
             return redirect()->away($link->url);
         } else {
             return redirect()->route('home');
@@ -31,7 +32,7 @@ class LinkController extends Controller
     public function index()
     {
         return inertia('Links/Index', [
-            'links' => LinkResource::collection(Link::with('user')->get()),
+            'links' => LinkResource::collection(Link::with('user')->where('expires_at', '>', now())->get()),
         ]);
     }
 }

@@ -17,6 +17,9 @@ class LinkResource extends JsonResource
         return [
             'url' => $this->url,
             'identifier' => $this->identifier,
+            'clicks' => $this->clicks,
+            'expires_at' => $this->expires_at,
+            'duration' => $this->duration,
             'user' => UserResource::make($this->whenLoaded('user')),
         ];
     }

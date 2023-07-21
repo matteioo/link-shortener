@@ -17,11 +17,16 @@ class LinkSeeder extends Seeder
     {
         $adminUser = User::where('id', 1)->firstOrFail();
 
+        if (DB::table('links')->where('identifier', 'laravel')->exists()) {
+            DB::table('links')->where('identifier', 'laravel')->delete();
+        }
         DB::table('links')->insert([
             'url' => 'https://laravel.com',
             'identifier' => 'laravel',
             'created_at' => now(),
             'updated_at' => now(),
+            'expires_at' => now()->addDay(),
+            'duration' => 1,
             'user_id' => $adminUser->id,
         ]);
 

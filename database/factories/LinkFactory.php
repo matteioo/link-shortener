@@ -16,9 +16,14 @@ class LinkFactory extends Factory
      */
     public function definition(): array
     {
+        $duration = fake()->numberBetween(1, 31);
+
         return [
             'url' => fake()->url(),
             'identifier' => fake()->unique()->regexify('[A-Za-z0-9]{5}'),
+            'clicks' => fake()->numberBetween(0, 100),
+            'duration' => $duration,
+            'expires_at' => now()->addDays($duration),
         ];
     }
 }
