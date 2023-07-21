@@ -28,15 +28,22 @@
                             <tr>
                                 <th>Identifier</th>
                                 <th>URL</th>
+                                <th class="text-right">Visits</th>
+                                <th>Expires</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                             <tr v-for="link in links">
-                                <td>{{ link.identifier }}</td>
+                                <td>
+                                    <a :href="route('link.redirect', link.identifier)" target="_blank" rel="noreferrer noopener"
+                                       class="underline text-indigo-500">{{ link.identifier }}</a>
+                                </td>
                                 <td>
                                     <a :href="link.url" target="_blank" rel="noreferrer noopener"
                                        class="underline text-indigo-500">{{ link.url }}</a>
                                 </td>
+                                <td class="text-right">{{ link.clicks }}</td>
+                                <td>{{ expiresAt(link.expires_at) }} {{ link.original_duration }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -48,9 +55,18 @@
 
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import {Head} from '@inertiajs/vue3';
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 defineProps({
     links: Array,
 })
+
+// Dayjs difference between two dates, function which takes a dateTime object as input and returns string
+const expiresAt = (dateTime) => {
+    return dayjs(dateTime).fromNow();
+}
 </script>
