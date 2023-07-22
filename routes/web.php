@@ -34,6 +34,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/links', [LinkController::class, 'index'])->middleware(['auth', 'verified'])->name('links.index');
+Route::post('/links', [LinkController::class, 'store'])->middleware(['auth', 'verified'])->name('links.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
