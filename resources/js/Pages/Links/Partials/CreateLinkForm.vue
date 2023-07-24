@@ -37,10 +37,38 @@
                         ref="durationInput"
                         v-model="form.duration"
                         type="number"
-                        class="mt-1 block w-full"
-                        autocomplete="url" />
+                        class="mt-1 block w-full" />
 
                     <InputError :message="form.errors.duration" class="mt-2" />
+                </div>
+            </div>
+
+            <div class="flex gap-x-4">
+                <div class="w-1/2">
+                    <InputLabel for="password" value="Password" />
+
+                    <TextInput
+                        id="password"
+                        ref="passwordInput"
+                        v-model="form.password"
+                        type="password"
+                        class="mt-1 block w-full"
+                        autocomplete="" />
+
+                    <InputError :message="form.errors.password" class="mt-2" />
+                </div>
+
+                <div class="w-1/2">
+                    <InputLabel for="password_confirmation" value="Confirm Password" />
+
+                    <TextInput
+                        id="password_confirmation"
+                        v-model="form.password_confirmation"
+                        type="password"
+                        class="mt-1 block w-full"
+                        autocomplete="" />
+
+                    <InputError :message="form.errors.password_confirmation" class="mt-2" />
                 </div>
             </div>
 
@@ -69,10 +97,14 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {ref} from "vue";
 
 const urlInput = ref(null);
+const durationInput = ref(null);
+const passwordInput = ref(null);
 
 const form = useForm({
     url: '',
     duration: '1',
+    password: '',
+    password_confirmation: '',
 })
 
 const shortenUrl = () => {
@@ -85,6 +117,14 @@ const shortenUrl = () => {
             if (form.errors.url) {
                 urlInput.value.focus();
             }
+            if (form.errors.duration) {
+                durationInput.value.focus();
+            }
+            if (form.errors.password) {
+                passwordInput.value.focus();
+            }
+
+            form.reset('password', 'password_confirmation');
         },
     })
 }

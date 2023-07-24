@@ -13,11 +13,25 @@ class Link extends Model
 
     /**
      * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
      */
     protected $fillable = [
         'url',
         'duration',
+        'password',
     ];
+
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password'
+    ];
+
     protected int $identifierLength = 6;
 
     protected static function boot()

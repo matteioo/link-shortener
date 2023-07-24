@@ -19,6 +19,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/r/{identifier}', [LinkController::class, 'redirectToUrl'])->name('link.redirect');
+Route::post('/r/{identifier}', [LinkController::class, 'redirectToUrl'])->name('link.redirect.password');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
