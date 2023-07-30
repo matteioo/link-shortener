@@ -30,6 +30,7 @@
                                 <th>URL</th>
                                 <th class="text-right">Visits</th>
                                 <th>Expires</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -44,6 +45,13 @@
                                 </td>
                                 <td class="text-right">{{ link.clicks }}</td>
                                 <td>{{ expiresAt(link.expires_at) }}</td>
+                                <td>
+                                    <Link :href="route('link.redirect.details', link.identifier)">
+                                        <Button class="text-sm" size="sm" variant="secondary">
+                                            <ListBulletIcon class="h-5 w-5" />
+                                        </Button>
+                                    </Link>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -55,9 +63,11 @@
 
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import {Head} from '@inertiajs/vue3';
+import {Head, Link} from '@inertiajs/vue3';
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { ListBulletIcon } from "@heroicons/vue/20/solid";
+import Button from "@/Components/Button.vue";
 
 dayjs.extend(relativeTime);
 

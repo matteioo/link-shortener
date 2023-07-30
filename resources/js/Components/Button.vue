@@ -7,7 +7,7 @@ export default defineComponent({
             type: String,
             default: 'base',
         },
-        buttonType: {
+        variant: {
             type: String,
             default: 'primary',
         },
@@ -19,19 +19,19 @@ export default defineComponent({
     computed: {
         sizeClasses() {
             const sizeClasses = {
-                'sm': 'px-4 py-2 text-xs',
+                'sm': 'px-3 py-1.5 text-xs',
                 'base': 'px-4 py-2 text-base',
             }
 
             return sizeClasses[this.size] ?? sizeClasses['base'];
         },
         styleClasses() {
-            const styleClasses = {
+            const variantClass = {
                 'primary': 'border-transparent bg-gray-800 dark:bg-gray-200 text-white dark:text-gray-800 enabled:hover:bg-gray-700 enabled:dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300',
                 'secondary': 'border-gray-300 dark:border-gray-500 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-sm enabled:hover:bg-gray-50 enabled:dark:hover:bg-gray-700'
             }
 
-            return styleClasses[this.buttonType] ?? styleClasses['primary'];
+            return variantClass[this.variant] ?? variantClass['primary'];
         }
     }
 })
