@@ -43,7 +43,7 @@
                                        class="underline text-indigo-500">{{ link.url }}</a>
                                 </td>
                                 <td class="text-right">{{ link.clicks }}</td>
-                                <td>{{ expiresAt(link.expires_at) }} {{ link.original_duration }}</td>
+                                <td>{{ expiresAt(link.expires_at) }}</td>
                             </tr>
                         </tbody>
                     </table>

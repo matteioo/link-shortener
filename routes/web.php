@@ -18,15 +18,21 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/r/{identifier}', [LinkController::class, 'redirectToUrl'])->name('link.redirect');
-Route::post('/r/{identifier}', [LinkController::class, 'redirectToUrl'])->name('link.redirect.password');
+Route::controller(LinkController::class)->group(function () {
+    Route::prefix('/r')->group(function () {
+        Route::get('!{identifier}', 'details')->name('link.redirect.details');
+        Route::get('/{identifier}', 'redirectToUrl')->name('link.redirect');
+        Route::post('/{identifier}', 'redirectToUrl')->name('link.redirect.password');
+    });
+
+    Route::get('/links', [LinkController::class, 'index'])->middleware(['auth', 'verified'])->name('links.index');
+    Route::post('/links', [LinkController::class, 'store'])->name('links.store');
+});
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('Home/Index', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
     ]);
 })->name('home');
 
@@ -34,8 +40,6 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/links', [LinkController::class, 'index'])->middleware(['auth', 'verified'])->name('links.index');
-Route::post('/links', [LinkController::class, 'store'])->middleware(['auth', 'verified'])->name('links.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

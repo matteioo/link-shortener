@@ -6,6 +6,7 @@ use App\Http\Resources\LinkResource;
 use App\Models\Link;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
@@ -61,12 +62,25 @@ class LinkController extends Controller
         ]);
     }
 
+    public function details(string $identifier)
+    {
+        $link = Link::where('identifier', $identifier)->first();
+
+        if (is_null($link)) {
+            return redirect()->route('home')->with('error', 'Link not found.')->setStatusCode(404);
+        }
+
+        return inertia('Links/Details', [
+            'link' => new LinkResource($link),
+        ]);
+    }
+
     /**
      * Store a new link.
      *
      * @throws ValidationException if validation fails
      */
-    public function store(Request $request): void
+    public function store(Request $request)
     {
         $this->validate($request, [
             'url' => ['required', 'url'],
@@ -79,7 +93,7 @@ class LinkController extends Controller
         $userId = null;
         $password = null;
 
-        if (auth()->user()) {
+        if (!is_null(auth()->user())) {
             $duration = $request->duration ?? 7;
             $length = 4;
             $userId = auth()->user()->getAuthIdentifier();
@@ -87,6 +101,9 @@ class LinkController extends Controller
             if ($request->has('password') && !is_null($request->password)) {
                 $password = Crypt::encryptString($request->password);
             }
+        } else {
+            // Guest user: loading times throttled to prevent mass creation of links
+            sleep(3);
         }
 
         $createdLink = new Link([
@@ -95,7 +112,14 @@ class LinkController extends Controller
             'password' => $password,
         ]);
 
+
         $createdLink->setIdentifierLength($length);
         $createdLink->setAttribute('user_id', $userId)->save();
+
+        if (is_null(auth()->user())) {
+            return inertia()->location(route('link.redirect.details', $createdLink->identifier));
+        }
+
+        return back();
     }
 }
