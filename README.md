@@ -16,7 +16,7 @@ This project was created using the [composer](https://getcomposer.org/) dependen
 
 For the frontend, you need a recent version of [Node](https://nodejs.org/en) as well as the NPM package manager.
 
-> **Warning**:
+> [!WARNING]
 > Even though Laravel supports Docker, those files are not installed in this project. As I am not able to run the docker environment, there is no way for me to test this and therefore those files are not included.
 
 ## First Steps
